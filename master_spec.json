@@ -1,0 +1,444 @@
+{
+  "revision": "D417-sanctuary-spine-v7-master-2026-11-18",
+  "sole_entrant": "Mustafa Hisham Ali",
+  "entrant_id": "",
+  "institution": "Khalifa University",
+  "units": "metres",
+  "axes": "x west to east; y south to north; z height AFFL; Three.js(x,height,-y).",
+  "room": {
+    "width_m": 8.52,
+    "depth_m": 4.465,
+    "polygon_m": [
+      [
+        0,
+        0
+      ],
+      [
+        8.52,
+        0
+      ],
+      [
+        8.52,
+        2.975
+      ],
+      [
+        6.745,
+        4.465
+      ],
+      [
+        0,
+        4.465
+      ]
+    ],
+    "ceiling_m": 2.85,
+    "ceiling_status": "Proposed assumed datum (2850 mm AFFL), not site-surveyed",
+    "ffl_m": 24.0,
+    "modeled_wall_faces_m": {
+      "south_nominal": 0,
+      "spine_panel": 0.09,
+      "spine_fascia": 0.065,
+      "north": 4.465,
+      "west": 0,
+      "east": 8.52
+    },
+    "pod_context": "SSMC Tower D Level 4 (ToD-4th-Part a): Room 044044/D417 between 044045/D416 and 044042, angled observation 044043 to Corridor 044112, served by Nurse St. 044111, Clean Utility 044109, Soiled Utility 044106, Meds 044108.",
+    "polygon_mm": [
+      [
+        0,
+        0
+      ],
+      [
+        8520,
+        0
+      ],
+      [
+        8520,
+        2975
+      ],
+      [
+        6745,
+        4465
+      ],
+      [
+        0,
+        4465
+      ]
+    ],
+    "clear_face_status": "8520 x 4465 mm adopted design clear-face coordinates; source dimension datums require measured survey confirmation."
+  },
+  "bed": {
+    "center_m": [
+      4.1,
+      2.0225
+    ],
+    "nominal_length_m": 2.235,
+    "nominal_width_m": 1.092,
+    "modeled_envelope_m": [
+      2.238,
+      1.098
+    ],
+    "head_direction": "south",
+    "foot_direction": "north",
+    "retracted_bounds": [
+      3.554,
+      0.905,
+      4.646,
+      3.14
+    ],
+    "extended_length_m": 2.489,
+    "extended_bounds": [
+      3.554,
+      0.905,
+      4.646,
+      3.394
+    ],
+    "rolled_north_m": 0.3,
+    "head_y_mm": 905
+  },
+  "pendant_anchors_m": {
+    "p1": [
+      3.15,
+      0.85
+    ],
+    "p2": [
+      5.45,
+      0.85
+    ]
+  },
+  "elements": [
+    {
+      "id": "pier",
+      "label": "REFERENCE PIER",
+      "bounds": [
+        4.89,
+        4.145,
+        5.99,
+        4.465
+      ],
+      "status": "existing structural envelope"
+    },
+    {
+      "id": "sanctuary_spine",
+      "label": "SOUTH SANCTUARY SPINE",
+      "bounds": [
+        0,
+        0,
+        5.55,
+        0.09
+      ],
+      "status": "proposed architectural headwall"
+    },
+    {
+      "id": "bed",
+      "label": "PROGRESSA+ BED (2235x1092 nominal)",
+      "bounds": [
+        3.554,
+        0.905,
+        4.646,
+        3.14
+      ],
+      "status": "standard retracted envelope"
+    },
+    {
+      "id": "storage",
+      "label": "SLIDING-FRONT SPINE CASEWORK (1300x415x2220)",
+      "bounds": [
+        5.55,
+        0,
+        6.85,
+        0.415
+      ],
+      "status": "clean prep surface (+900, 500H clear), spare bay & bi-parting sliding upper fronts"
+    },
+    {
+      "id": "divider",
+      "label": "SEALED SPLASH BARRIER (1850H)",
+      "bounds": [
+        6.86,
+        0,
+        6.9,
+        0.45
+      ],
+      "status": "impervious solid base + safety glass wet/clean barrier"
+    },
+    {
+      "id": "waste",
+      "label": "CLINICAL WASTE & SHARPS",
+      "bounds": [
+        6.92,
+        0,
+        7.3,
+        0.38
+      ],
+      "status": "hands-free waste + wall sharps container"
+    },
+    {
+      "id": "sink",
+      "label": "DOH PART D TYPE A HANDWASH STATION",
+      "bounds": [
+        7.35,
+        0,
+        8.0,
+        0.58
+      ],
+      "status": "seamless radiused bowl (520x360x200 clear internal, 0.187 m2 >= 0.1), soap over bowl (x=-190), +280 offset sensor tap, 350 splashback"
+    },
+    {
+      "id": "sofa",
+      "label": "FAMILY SLEEPER",
+      "bounds": [
+        0.25,
+        3.58,
+        2.15,
+        4.4
+      ],
+      "status": "proposed planning envelope"
+    },
+    {
+      "id": "family_table",
+      "label": "SIDE TABLE",
+      "bounds": [
+        2.22,
+        3.95,
+        2.58,
+        4.31
+      ],
+      "status": "clear of wardrobe swing"
+    },
+    {
+      "id": "wardrobe",
+      "label": "BELONGINGS",
+      "bounds": [
+        2.65,
+        3.84,
+        3.35,
+        4.4
+      ],
+      "status": "proposed planning envelope"
+    },
+    {
+      "id": "recliner",
+      "label": "RECLINER / FACES EAST",
+      "bounds": [
+        0.65,
+        1.25,
+        1.55,
+        2.11
+      ],
+      "status": "proposed planning envelope"
+    },
+    {
+      "id": "ventilator",
+      "label": "P2 EAST VENTILATOR",
+      "bounds": [
+        4.85,
+        0.93,
+        5.29,
+        1.37
+      ],
+      "anchor_m": [
+        5.45,
+        0.85
+      ],
+      "status": "articulated from ceiling anchor (3.15, 0.85)"
+    },
+    {
+      "id": "pump_monitor",
+      "label": "P2 CONSOLIDATED MONITOR & 4-CH INFUSION DOCK",
+      "bounds": [
+        4.82,
+        0.93,
+        5.32,
+        1.37
+      ],
+      "anchor_m": [
+        5.45,
+        0.85
+      ],
+      "status": "articulated from ceiling anchor (5.45, 0.85), 4-channel rack + monitor"
+    },
+    {
+      "id": "crash_cart",
+      "label": "CRASH CART",
+      "bounds": [
+        6.12,
+        1.27,
+        6.77,
+        2.07
+      ],
+      "status": "795 mm nominal body gap to sliding casework (575 mm with lower drawer open)"
+    }
+  ],
+  "care_strips": {
+    "west": [
+      2.354,
+      0.965,
+      3.554,
+      3.2
+    ],
+    "east": [
+      4.646,
+      0.965,
+      5.846,
+      3.2
+    ],
+    "foot": [
+      3.554,
+      3.2,
+      4.646,
+      4.405
+    ],
+    "head": [
+      3.554,
+      0.09,
+      4.646,
+      0.965
+    ]
+  },
+  "clearances_mm": {
+    "head_to_spine_panel": 815,
+    "head_to_recessed_fascia": 840,
+    "foot_routine_retracted": 1325,
+    "foot_routine_extended": 1071,
+    "foot_airway_retracted": 1025,
+    "foot_airway_extended": 771,
+    "lateral_nominal": 1200
+  },
+  "door": {
+    "reference_nominal_width_m": 2.22,
+    "reference_opening_height_m": 2.41,
+    "proposed_clear_width_m": 2,
+    "proposed_clear_y_range_m": [
+      0.63,
+      2.63
+    ],
+    "rough_opening_y_mm": [
+      520,
+      2740
+    ]
+  },
+  "observation": {
+    "reference_sill_m": 1.0,
+    "reference_lintel_m": 1.4,
+    "proposed_sill_m": 1.0,
+    "proposed_lintel_m": 2.4,
+    "segment_m": [
+      [
+        6.745,
+        4.465
+      ],
+      [
+        8.52,
+        2.975
+      ]
+    ],
+    "technology": "Reverse-mode PNLC (fail-clear transparent when unpowered; frosted on AC power)",
+    "HUD": "Upper-right peripheral SIMULATED DATA HUD (ECG, PLETH, ABP traces); primary monitor independent",
+    "angled_length_mm": 2317
+  },
+  "sky": {
+    "dimensions_mm": "2400 x 1800",
+    "bounds_m": [
+      2.9,
+      1.25,
+      5.3,
+      3.05
+    ],
+    "underside_affl_m": 2.75
+  },
+  "hoist": {
+    "rails_x_m": [
+      1.15,
+      5.75
+    ],
+    "rails_y_m": [
+      1.1,
+      3.45
+    ],
+    "bridge_affl_m": 2.6,
+    "target_kg": 350
+  },
+  "pier": {
+    "bounds_mm": [
+      4890,
+      4145,
+      5990,
+      4465
+    ],
+    "width_mm": 1100,
+    "depth_mm": 320,
+    "source_interpretation": "5440 dimension terminates on pier centreline, with 550 each side. Structural envelope retained."
+  },
+  "targets": {
+    "dayMelanopicEDI": 250,
+    "sleepMelanopicEDI": 0.8,
+    "nightNoiseDba": 39,
+    "corridorNoiseDba": 62,
+    "acousticNRC": 0.85,
+    "procedureLux": 10000,
+    "procedureRa": 95,
+    "procedureR9": 90,
+    "PNLCResponseMs": 100,
+    "retrofitHours": 72,
+    "status": "Engineering targets / illustrative schedules; not measured performance."
+  },
+  "MEP_schedule": {
+    "O2": 4,
+    "Medical Air": 4,
+    "Vacuum": 4,
+    "Essential Power": 24,
+    "Cat6A": 6,
+    "RO_Dialysis_Reserve": 1,
+    "safety": "Dialysis reserve isolated from patient circuits; bag-based CRRT uses approved solution bags. Gas terminals distributed two of each per pendant."
+  },
+  "reconciliation": [
+    {
+      "item": "Pier X",
+      "requested": [
+        5440,
+        6540
+      ],
+      "adopted": [
+        4890,
+        5990
+      ],
+      "reason": "5440 is drawn to the pier centreline, not west face; retain structure."
+    },
+    {
+      "item": "Angled wall",
+      "requested_length_mm": 1170,
+      "adopted_endpoint_length_mm": 2317,
+      "reason": "Adopt supplied proposed endpoints; their Euclidean length is approximately 2317 mm. Not an as-built 1170 mm segment."
+    },
+    {
+      "item": "Depth",
+      "design_clear_mm": 4465,
+      "reason": "Remove internal wall deductions in proposed design coordinate system. Reference comparison keeps the same physical shell; 4345 is shown only as the legacy modeled planning depth."
+    },
+    {
+      "item": "Bed head",
+      "adopted_y_mm": 905,
+      "reason": "Explicit optional placement in supplied brief; 815 panel / 840 recessed fascia clearance, routine foot 1325."
+    },
+    {
+      "item": "Section lintels",
+      "door_mm": 2410,
+      "proposed_WA31_mm": 2400,
+      "reason": "Keep distinct levels; +2410 is not the proposed window lintel."
+    },
+    {
+      "item": "Lateral care",
+      "nominal_band_mm": 1200,
+      "organ_support_local_gap_mm": 204,
+      "reason": "CRRT and ECMO occupy the east nominal band. Do not represent it as an unobstructed 1200 mm aisle."
+    },
+    {
+      "item": "Performance",
+      "reason": "CIE S 026 is a metrology standard. Lighting/acoustics/PNLC/350 kg hoist/72 h schedule are proposed targets subject to selection and commissioning."
+    },
+    {
+      "item": "Comparison",
+      "reason": "Reference study shows verified opening and disclosed legacy planning envelope; no invented trailing cables, unshielded basin or swinging-door defects are attributed to SSMC."
+    }
+  ]
+}
