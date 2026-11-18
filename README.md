@@ -11,4 +11,6 @@ Gold Master adds a 250 mm staff-planned west bed offset (454 mm nominal east gap
 
 Conventional life-support, alarms and hardwired nurse call remain independent. AI does not actuate treatment, clinical devices, beds, doors or HVAC.
 
+Final polish adds the proposed staff-initiated two-way reassurance link as a clearly labelled local screen preview, prayer-mat drawer, warm reading light, USB-C sockets and a recessed northern family privacy track outside hoist travel. Live media are not connected. Native physically based rendering uses ACES, 4096 PCF soft shadows, calibrated cove fill, a local room reflection probe and support contact occlusion. All nine SVG plates remain byte-identical to the preceding Gold Master.
+
 See CREDITS.md and THIRD_PARTY_NOTICES.txt. Original supplied floor-plan PDFs and private organizer correspondence are not redistributed. AI assisted research, design, coding, drawings and review; the current submission captures are taken directly from the v7 scene.

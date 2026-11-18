@@ -1,5 +1,5 @@
 {
-  "revision": "D417-sanctuary-spine-v7-gold-master-2026-11-18",
+  "revision": "D417-sanctuary-spine-v7-gold-master-polished-2026-11-18",
   "sole_entrant": "Mustafa Hisham Ali",
   "entrant_id": "",
   "institution": "Khalifa University",
@@ -472,6 +472,20 @@
     "Cat6A": 6,
     "RO_Dialysis_Reserve": 1,
     "safety": "Dialysis reserve isolated from patient circuits; bag-based CRRT uses approved solution bags. Gas terminals distributed two of each per pendant."
+  },
+  "presentation_polish": {
+    "reassurance": {
+      "from": "Alcove 044043",
+      "to": "North orientation display +1660 AFFL",
+      "authority": "Staff initiated",
+      "mode": "Synthetic audio-video link preview; no live media connection"
+    },
+    "hospitality": [
+      "Prayer-mat drawer in existing belongings cabinet",
+      "Warm reading lamp / USB-C charging",
+      "Recessed northern privacy track at +2845 AFFL outside hoist bridge travel"
+    ],
+    "lighting": "Calibrated physically based architectural presentation; HDR scene reflection probe, support contact occlusion and PCF soft shadows. No photometric or acoustic performance inference."
   },
   "reconciliation": [
     {
