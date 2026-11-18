@@ -32,7 +32,7 @@ def trim_segment(a,b,r):
 
 class Plate:
  def __init__(self,n,title,scale='1:50 at A3 / 100%'):
-  self.n=n;self.title=title;self.scale=scale;self.fills=[];self.lines=[];self.labels=[];self.boxes=[]
+  self.n=n;self.title=title;self.scale=scale;self.fills=[];self.lines=[];self.labels=[];self.boxes=[];self.geometry_receipt={}
   self.text(64,54,'THE SANCTUARY SPINE  /  ROOM D417 - 044044  /  SSMC TOWER D LEVEL 4',15,bold=True)
   self.text(64,104,f'A{n}  |  {title}',30,bold=True)
   self.text(64,140,f'{scale}   |   All dimensions mm; local room axes X east, Y north, Z AFFL',14)
@@ -94,15 +94,16 @@ class Plate:
    rgb=tuple(int(col.lstrip('#')[i:i+2],16) for i in [0,2,4]);bg=INK if sum(rgb)>570 else PAPER
    if halo:labels.append(f'<rect data-background="label" x="{box[0]:.4f}" y="{box[1]:.4f}" width="{box[2]-box[0]:.4f}" height="{box[3]-box[1]:.4f}" rx="3" fill="{bg}" fill-opacity="0.96"/>')
    labels.append(f'<text x="{x}" y="{y}" font-size="{size}" font-weight="{700 if bold else 400}" text-anchor="{anchor}" fill="{col}">{html.escape(s)}</text>')
-  svg=f'<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 1680 1188" role="img" aria-label="Appendix A{self.n}: {html.escape(self.title)}"><title>Appendix A{self.n}: {html.escape(self.title)}</title><rect data-background="page" width="1680" height="1188" fill="{PAPER}"/><g font-family="Arial, sans-serif">'+''.join(self.fills)+'<g id="geometry-layer">'+''.join(strokes)+'</g><g id="labels-layer">'+''.join(labels)+'</g></g></svg>'
+  svg=f'<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 1680 1188" role="img" aria-label="Appendix A{self.n}: {html.escape(self.title)}"><title>Appendix A{self.n}: {html.escape(self.title)}</title><metadata id="geometry-receipt">{html.escape(json.dumps(self.geometry_receipt))}</metadata><rect data-background="page" width="1680" height="1188" fill="{PAPER}"/><g font-family="Arial, sans-serif">'+''.join(self.fills)+'<g id="geometry-layer">'+''.join(strokes)+'</g><g id="labels-layer">'+''.join(labels)+'</g></g></svg>'
   (ROOT/'plans'/f'{name}.svg').write_text(svg,encoding='utf-8')
   return {'plate':name,'number':self.n,'texts':len(self.labels),'visibleStrokeSegments':len(strokes),'viewBox':[1680,1188]}
 
 class Room:
  def __init__(self,p,spec,ox=130,oy=690,s=.08):self.p=p;self.spec=spec;self.ox=ox;self.oy=oy;self.s=s
  def xy(self,x,y):return self.ox+x*self.s,self.oy-y*self.s
- def box(self,b,fill=GREY,color=INK,width=1):
+ def box(self,b,fill=GREY,color=INK,width=1,role=None):
   x1,y1,x2,y2=b;x,y=self.xy(x1,y2);self.p.rect(x,y,(x2-x1)*self.s,(y2-y1)*self.s,fill,color,width)
+  if role and fill:self.p.fills[-1]=self.p.fills[-1].replace('<polygon',f'<polygon data-gm-role="{role}"')
  def label(self,x,y,s,size=12,bold=False):self.p.text(*self.xy(x,y),s,size,bold,anchor='middle')
  def draw(self,state='routine',dimensions=True):
   p=self.p;S=self.spec;poly=S['room']['polygon_mm'];pts=[self.xy(*q) for q in poly]
@@ -121,14 +122,23 @@ class Room:
   # LIN36 / LIN37 colour zoning is a proposed interpretation of the finish codes.
   cx,cy=self.xy(4100,2100);p.ellipse(cx,cy,1900*self.s,1700*self.s,'#c4c8b8',.7,fill='#e4e8d9')
   head=S['bed']['head_y_mm']+(300 if state=='airway' else 0)
-  self.box([2354,head,3554,head+2235],'#e2ebe6','#8baf9d',.7)
-  self.box([4646,head,5846,head+2235],'#e2ebe6','#8baf9d',.7)
-  self.box([3554,head,4646,head+2235],'#b7d1c6',INK,1.4)
-  self.box([3554,head+1995,4646,head+2235],'#dce5df')
-  self.label(4100,head+1100,'2235 x 1092',12)
-  self.label(4100,head-80,'HEAD / SOUTH',10)
-  self.label(2954,head+1050,'1200',12);self.label(5246,head+1050,'1200',12)
-  self.label(4100,(head+2235+4465)/2,f'{4465-head-2235} FOOT',12,True)
+  shift=S['scenario_geometry']['organ_support']['bed_west_offset_mm'] if state=='organ_support' else 0
+  left,right=3554-shift,4646-shift;cx=4100-shift
+  self.box([2354,head,left,head+2235],'#e2ebe6','#8baf9d',.7)
+  self.box([right,head,4850 if state=='organ_support' else 5846,head+2235],'#e2ebe6','#8baf9d',.7)
+  if shift:
+   p.poly([self.xy(3554,head),self.xy(4646,head),self.xy(4646,head+2235),self.xy(3554,head+2235)],color='#9d8a71',width=.8,dash='5 4')
+  self.box([left,head,right,head+2235],'#b7d1c6',INK,1.4,role='active-bed-envelope')
+  self.box([left,head+1995,right,head+2235],'#dce5df')
+  self.label(cx,head+1100,'2235 x 1092',12)
+  self.label(cx,head-80,'HEAD / SOUTH',10)
+  self.label((2354+left)/2,head+1050,str(left-2354),12)
+  if state=='organ_support':
+   self.label((right+4850)/2,head+2100,'454',10,True)
+   self.label(3900,3450,'250 WEST / 204 CENTERED BASELINE',10,True)
+  else:self.label(5246,head+1050,'1200',12)
+  self.label(cx,(head+2235+4465)/2,f'{4465-head-2235} FOOT',12,True)
+  p.geometry_receipt.update({'scenario':state,'bedBoundsMm':[left,head,right,head+2235],'nominalEastGapMm':4850-right if shift else None,'bedWestOffsetMm':shift,'scalePxPerMm':self.s,'originPx':[self.ox,self.oy]})
   self.box([250,3580,2150,4400],'#d8c5a3');self.label(1200,3940,'FAMILY SLEEPER',10)
   self.box([2650,3840,3350,4400],'#bda984');self.label(3000,4060,'BELONGINGS',9)
   self.box([650,1250,1550,2110],'#91b1a0');self.label(1100,1660,'RECLINER FLAT' if state=='mobility' else 'RECLINER',10)
@@ -137,9 +147,12 @@ class Room:
   self.label(6200,275,'SLIDING CASEWORK',10);self.label(6200,115,'1300 x 415 mm',10)
   self.box([6860,0,6900,450],'#a7cbd1')
   self.box([6920,0,7300,380],'#cfb38d');self.label(7110,180,'WASTE',9)
+  self.box(S['gold_master']['sealed_containment']['bounds_mm'],'#c6aaa0',role='sealed-containment')
+  self.label(7110,830,'SEALED',8);self.label(7110,650,'044106',8)
+  self.label(6300,560,'BCMA',9)
   self.box([7350,0,8000,580],'#c7ded9');cx,cy=self.xy(7675,290);p.ellipse(cx,cy,21,12)
-  self.label(7675,730,'TYPE A BASIN',10,True)
-  p.arrow(self.xy(7675,660),self.xy(7675,540),'#547c72',.7)
+  self.label(7675,1150,'TYPE A BASIN',10,True)
+  p.arrow(self.xy(7675,1080),self.xy(7675,540),'#547c72',.7)
   for x,label in [(2770,'P1 MON / 4-CH'),(5070,'P2 VENT')]:
    self.box([x-220,930,x+220,1300],'#c3d5ce');self.label(x,1115,label,9)
   self.box([3650,4430,4550,4465],'#284c43');self.label(4100,4290,'ORIENTATION TV',10)
@@ -148,8 +161,8 @@ class Room:
   self.label(8200,1870,'2000 CLEAR',10)
   self.label(7000,3460,'WA31',10)
   if state=='organ_support':
-   self.box([4850,1350,5450,1950],'#c8af81');self.label(5150,1630,'CRRT',11,True)
-   self.box([4850,2300,5650,2950],'#b38177');self.label(5250,2600,'ECMO',11,True)
+   self.box([4850,1350,5450,1950],'#c8af81',role='crrt-envelope');self.label(5150,1630,'CRRT',11,True)
+   self.box([4850,2300,5650,2950],'#b38177',role='ecmo-envelope');self.label(5250,2600,'ECMO',11,True)
    p.arrow(self.xy(5100,1450),self.xy(4950,90),GOLD,1,'5 4')
   if state=='mobility':
    p.arrow(self.xy(4100,2100),self.xy(1100,1680),'#a16a3c',2,'7 5')
@@ -187,6 +200,7 @@ def generate():
  S=load_spec();(ROOT/'plans').mkdir(exist_ok=True);receipts=[]
  for n,title in enumerate(TITLES,1):
   p=Plate(n,title,'1:250 source-calibrated pod trace at A3 / matrix not to scale' if n==9 else '1:50 at A3 / 100% (main plans)')
+  p.geometry_receipt={'roomClearMm':[8520,4465],'pierBoundsMm':S['pier']['bounds_mm'],'wa31LengthMm':S['observation']['angled_length_mm']}
   if n<=5:
    state={1:'routine',2:'airway',3:'mobility',4:'transfer',5:'routine'}[n]
    r=Room(p,S).draw(state)
@@ -195,7 +209,7 @@ def generate():
     y=p.note(x,y,'DESIGN ENVELOPE','8520 x 4465 mm clear-face design coordinates. Bed head Y=905; panel Y=90; fascia Y=65.',515)
     y=p.note(x,y,'FOOT CLEARANCE / FOUR STATES','Routine 1325; extended 1071; airway 1025; airway + extension 771. Nominal envelope 2235 x 1092.',515)
     y=p.note(x,y,'SOURCE RECONCILIATION','5440 terminates at the pier centreline. Structural pier retained at X=4890..5990, Y=4145..4465.',515)
-    p.note(x,y,'SLIDING FRONTS + WET-SIDE WASTE','Two fixed-size doors bypass on separate tracks. Wet towels drop east of the 1850H splash screen.',515)
+    p.note(x,y,'CLOSED-LOOP CLEAN / SEALED DIRTY ROUTES','044108 / 044109 clean supply to BCMA prep verification. Separate wet-side sealed-liner bedpan holding; closed transport to 044106. Wet towels stay east of the splash screen.',515)
    elif n==2:
     y=p.note(x,y,'AIRWAY WORKING STATE','Bed rolled 300 mm north by staff. Head-to-panel gap 1115; foot gap 1025 retracted / 771 extended.',515)
     y=p.note(x,y,'STAGED RESUSCITATION','Crash cart parks in the northeast pocket for routine care. Staff position it for a procedure; no automatic equipment movement.',515)
@@ -213,12 +227,17 @@ def generate():
     for ax,hx,label in [(3150,2770,'P1'),(5450,5070,'P2')]:
      p.ellipse(*r.xy(ax,850),6,6,fill=PAPER);p.arrow(r.xy(ax,850),r.xy(hx,1150),GOLD,1.5);r.label(ax,630,label+' ANCHOR',10)
     r.box([2900,1250,5300,3050],None,'#897651',1.5)
+    for b in [[2780,1130,5420,3170],[2825,1175,5375,3125]]:
+     a,bx,c,d=b;p.poly([r.xy(a,bx),r.xy(c,bx),r.xy(c,d),r.xy(a,d)],color='#4e8d9b',width=1,dash='5 4')
+    r.box(S['gold_master']['ventilation']['return_bounds_mm'],'#9fc6c4',role='low-return')
+    r.label(8100,780,'LOW RETURN',9)
+    r.box(S['gold_master']['ventilation']['brief_return_zone_mm'],None,'#b39b79',.6)
     for xx in [1150,5750]:p.line(*r.xy(xx,1100),*r.xy(xx,3450),'#6f6d62',3)
     for xx in [2950,5250]:
      for yy in [1300,3000]:p.ellipse(*r.xy(xx,yy),5,5,GOLD,1.2,fill='#efe2ba')
-    y=p.note(x,y,'COORDINATED CEILING TARGETS','Soffit +2850; sky underside +2750; hoist bridge +2600 AFFL. Sky coffer 2400 x 1800.',515)
+    y=p.note(x,y,'COORDINATED CEILING TARGETS','Soffit +2850; sky underside +2750; hoist bridge +2600 AFFL. Sky coffer 2400 x 1800 with perimeter HEPA slot supply; downward-wash intent toward a low-level east return.',515)
     y=p.note(x,y,'FOUR AIMABLE PROCEDURE SPOTS','Task target >=10,000 lux at selected cannulation planes; Ra >=95; R9 >=90. Verify shadowing, spectrum and glare.',515)
-    p.note(x,y,'STRUCTURAL ANCHOR / WORKING HEAD','P1: (3150,850) to (2770,1150). P2: (5450,850) to (5070,1150). Dedicated structural and service coordination.',515)
+    p.note(x,y,'MEP BALANCE + CLEAR RETURN','P1 (3150,850) / P2 (5450,850). Return intake X8100..8460 avoids the bin/basin blocking the brief zone X7000..7500. Pressure / ACH / HEPA integrity / flow pattern: Stage-2 CFD, TAB and smoke testing.',515)
    common_footer(p);scale_arrows(p)
   elif n==6:
    ox,oy,s=240,780,.12
@@ -278,8 +297,8 @@ def generate():
     p.text(ox+400,630,'500 + 3295 + 670 = 4465' if i==0 else '2000 clear telescopic slide',13)
    r=Room(p,S,ox=100,oy=1090,s=.08).draw('organ_support',False)
    p.text(950,810,'MAXIMUM ORGAN SUPPORT',17,True)
-   p.paragraph(950,845,'CRRT 600 x 600 at X4850..5450 / Y1350..1950. ECMO 800 x 650 at X4850..5650 / Y2300..2950. Bed foot Y3140 leaves 1325 to the north wall. East working band is occupied by organ-support equipment; the 1200 nominal band is not a clear aisle.',630,14)
-   p.paragraph(950,1025,'RO and sealed drainage are a future dialysis utility reserve. The pictured bag-based CRRT circuit uses approved solution bags.',630,14)
+   p.paragraph(950,845,'CRRT 600 x 600 at X4850..5450 / Y1350..1950. ECMO 800 x 650 at X4850..5650 / Y2300..2950. Centered bed leaves 204 mm east device clearance; a staff-planned 250 mm west offset (X3304..4396) expands the nominal east procedure gap to 454 mm while retaining a 950 mm west band.',630,14)
+   p.paragraph(950,1020,'Plan positioning before cannulation, then lock casters. Stage-2 verifies rails, hand-crank access and line envelopes. Bag-based CRRT remains independent of the RO reserve.',630,13)
   else:
    ctx=json.loads((ROOT/'source_context_geometry.json').read_text(encoding='utf-8'));ox,oy=90,245;cw,ch=ctx['width'],ctx['height']
    p.text(90,220,'SCALED ARCHITECTURAL TRACE / ToD-4th-PART a',17,True)
@@ -319,7 +338,7 @@ def generate():
    p.text(x,y,'KIT-OF-PARTS / ADAPTABLE CASSETTE',17,True);y+=38
    for title,body in [('STANDARD ADULT / 044044 D417','Integrated service cassette, staff-first observation and a west family zone.'),('AIRBORNE ISOLATION / 044034-35','Adapt to anteroom 044036: pressure indication and pass-through PPE cabinet. A -5 Pa study setpoint is conditional on an approved full pressure cascade.'),('MEDICAL ICU / 044048 D407','Reuse the cassette and finish palette; adapt services, equipment envelopes, door and observation interfaces to the host room.')]:
     y=p.note(x,y,title,body,720)
-   p.paragraph(850,1000,'Green: clean-supply intention. Amber: soiled/dirty-service intention. Route overlays need operational validation; the architectural trace is source-calibrated, with small flooring hatches and dimension clutter omitted.',720,13)
+   p.paragraph(850,1000,'Green: closed-loop clean supply from 044108 / 044109 to bedside BCMA verification. Amber: sealed-liner dirty transport to 044106, with holding on the wet side. Routes proceed through Stage-2 operational review.',720,13)
    p.text(90,1085,'Derived vector excerpt: SSMC supplied project record drawing. The complete source PDF is not redistributed.',12)
   receipts.append(p.save(NAMES[n-1]))
  (ROOT/'plans/PLATE_MANIFEST.json').write_text(json.dumps(receipts,indent=2),encoding='utf-8')

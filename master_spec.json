@@ -1,5 +1,5 @@
 {
-  "revision": "D417-sanctuary-spine-v7-master-2026-11-18",
+  "revision": "D417-sanctuary-spine-v7-gold-master-2026-11-18",
   "sole_entrant": "Mustafa Hisham Ali",
   "entrant_id": "",
   "institution": "Khalifa University",
@@ -369,6 +369,88 @@
     "depth_mm": 320,
     "source_interpretation": "5440 dimension terminates on pier centreline, with 550 each side. Structural envelope retained."
   },
+  "scenario_geometry": {
+    "organ_support": {
+      "bed_west_offset_mm": 250,
+      "centered_bed_bounds_mm": [
+        3554,
+        905,
+        4646,
+        3140
+      ],
+      "offset_bed_bounds_mm": [
+        3304,
+        905,
+        4396,
+        3140
+      ],
+      "device_west_edge_mm": 4850,
+      "west_care_band_outer_edge_mm": 2354,
+      "centered_east_gap_mm": 204,
+      "offset_east_gap_mm": 454,
+      "offset_west_band_mm": 950,
+      "workflow": "Staff-planned pre-cannulation positioning; casters locked after positioning. No AI or live-device actuation."
+    }
+  },
+  "gold_master": {
+    "bcma": {
+      "bounds_mm": [
+        5690,
+        65,
+        6110,
+        115
+      ],
+      "center_affl_mm": 1190,
+      "display_mm": [
+        380,
+        200
+      ],
+      "scanner_dock_x_mm": 6360,
+      "purpose": "BCMA / EMR verification mini-panel and cordless barcode scanner dock; demonstration only, no clinical EMR connection."
+    },
+    "sealed_containment": {
+      "bounds_mm": [
+        6920,
+        520,
+        7300,
+        1020
+      ],
+      "height_mm": 650,
+      "destination": "Soiled Utility 044106",
+      "zone": "dirty wet-side; independent of medication-preparation casework",
+      "method": "Closed-lid sealed-liner temporary holding and closed transport; product and IPC approval required."
+    },
+    "ventilation": {
+      "sky_bounds_mm": [
+        2900,
+        1250,
+        5300,
+        3050
+      ],
+      "perimeter_slot_outer_bounds_mm": [
+        2780,
+        1130,
+        5420,
+        3170
+      ],
+      "brief_return_zone_mm": [
+        7000,
+        120,
+        7500,
+        300
+      ],
+      "return_bounds_mm": [
+        8100,
+        55,
+        8460,
+        90
+      ],
+      "return_center_affl_mm": 300,
+      "return_height_mm": 240,
+      "design_intent": "Perimeter HEPA-filtered supply with downward-wash intent toward unobstructed low-level east return. Pressure relationship and air quantities set by MEP / IPC; no AI control. CFD, TAB and smoke visualization validate distribution.",
+      "return_reconciliation": "Brief zone overlaps paper-towel bin / basin. Intake relocated to clear adjacent south-wall bay X8100..8460; brief zone remains a reference on A5."
+    }
+  },
   "targets": {
     "dayMelanopicEDI": 250,
     "sleepMelanopicEDI": 0.8,
@@ -429,8 +511,10 @@
     {
       "item": "Lateral care",
       "nominal_band_mm": 1200,
-      "organ_support_local_gap_mm": 204,
-      "reason": "CRRT and ECMO occupy the east nominal band. Do not represent it as an unobstructed 1200 mm aisle."
+      "organ_support_centered_gap_mm": 204,
+      "organ_support_west_offset_gap_mm": 454,
+      "offset_west_band_mm": 950,
+      "reason": "250 mm staff-planned west offset redistributes space. Neither the 204 nor 454 mm local gap establishes clinical access approval."
     },
     {
       "item": "Performance",
